@@ -8,22 +8,33 @@ date: "2026-04-15"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+#Librerias
+library(readxl)
+library(writexl)
+library(stringr)
 ```
 
-## Including Plots
+```{r}
+archivo_zip <- "2025-26 Tractament de les dades Gr.A-T (36423)-Tarea Intermediate R(Datacamp)-3281647.zip"
 
-You can also embed plots, for example:
+unzip(archivo_zip, exdir = "entregas")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+ficheros_puntos <- list.files("entregas", pattern = "\\.txt$", recursive = TRUE, full.names = TRUE)
+
+lista_resultados <- lapply(ficheros_puntos,function(ruta) {
+  partes <- unlist(strsplit(ruta, split = "/"))
+  carpeta_alumno <- partes[length(partes) - 1]                
+  apellido_solo <- unlist(strsplit(carpeta_alumno, split = "_"))[1]                 
+  lineas <- readLines(ruta, warn = FALSE)        
+  nota_num <- as.numeric(str_extract(lineas, "\\d+"))
+  data.frame(
+    "Apellido(s)" = apellido_solo,
+    "puntos" = nota_num,
+    "NomFile" = basename(ruta), # basename extrae solo "puntos.txt" de la ruta completa
+    "Puntos" = paste(lineas, collapse = " "), # Guarda el texto original por si acaso
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )})
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
