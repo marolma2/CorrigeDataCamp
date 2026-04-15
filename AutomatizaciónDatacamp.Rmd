@@ -1,6 +1,8 @@
 ---
 title: "Automatización Datacamp"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 date: "2026-04-15"
 ---
 
@@ -13,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(writexl)
 library(stringr)
+library(dplyr)
 ```
 
 ```{r}
@@ -31,10 +34,32 @@ lista_resultados <- lapply(ficheros_puntos,function(ruta) {
   data.frame(
     "Apellido(s)" = apellido_solo,
     "puntos" = nota_num,
-    "NomFile" = basename(ruta), # basename extrae solo "puntos.txt" de la ruta completa
-    "Puntos" = paste(lineas, collapse = " "), # Guarda el texto original por si acaso
+    "NomFile" = basename(ruta),
+    "Puntos" = paste(lineas, collapse = " "), 
     stringsAsFactors = FALSE,
     check.names = FALSE
   )})
+
+
+
+
 ```
+```{r}
+evalua_df <- do.call(rbind, lista_resultados)
+
+evalua_df <- evalua_df[order(evalua_df$`Apellido(s)`), ]
+evalua_final_limpia <- evalua_df %>%
+  group_by(`Apellido(s)`) %>%
+  summarize(
+    puntos = max(puntos, na.rm = TRUE),
+    Puntos_Texto = first(Puntos)
+  ) %>%
+  ungroup()
+
+write_xlsx(evalua_final_limpia, "Resultado_Final_DataCamp.xlsx")
+
+head(evalua_final_limpia)
+```
+
+
 
