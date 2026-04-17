@@ -69,5 +69,11 @@ write_xlsx(evalua_df, "NotasRIntermedio.xlsx")
 write_xlsx(alumnos_notas_final, "AlumnosNotas.xlsx")
 ```
 
+1. ¿Todos usaron el nombre "puntos.txt" para el archivo?
+La verdad es que no. Aunque en las instrucciones se pedía ese nombre específico, muchos compañeros entregaron el archivo con nombres distintos. Si hubiera programado el código para buscar solo "puntos.txt", me habría saltado a mucha gente. Al final, lo mejor ha sido configurar el programa para que busque cualquier archivo que termine en ".txt" dentro de las carpetas.
 
+2. ¿Cuántas variantes de nombres hay?
+He encontrado bastantes, en total unas 8 variantes diferentes.
 
+3. ¿Todas las entregas contienen el fichero de puntos y el justificante de realización del curso ?
+Al revisar las carpetas me he dado cuenta de que las entregas no están completas en todos los casos. Por un lado, todos los que subieron algo sí que incluyeron su archivo de texto con la nota (aunque muchos no usaron el nombre correcto). Sin embargo, con los justificantes hay bastantes fallos, porque al comparar los archivos de texto con los PDF o imágenes, se ve que a varios compañeros se les olvidó adjuntar el certificado o le pusieron un nombre que el buscador no encuentra. Además, al juntar los datos con la lista oficial, se ve que hay unos cuantos alumnos que directamente no entregaron nada
